@@ -1,0 +1,24 @@
+{
+  "name": "responsive-wordpress-posts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarbull/responsive-wordpress-posts.git"
+  },
+  "keywords": [
+    "wordpress",
+    "responsive",
+    "posts"
+  ],
+  "author": "Cezar Sirbu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sarbull/responsive-wordpress-posts/issues"
+  },
+  "homepage": "https://github.com/sarbull/responsive-wordpress-posts#readme"
+}
