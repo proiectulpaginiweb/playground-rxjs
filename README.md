@@ -1,4 +1,4 @@
-# typescript-course
+# responsive-wordpress-posts
 
 # start
 ```bash
