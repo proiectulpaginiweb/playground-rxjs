@@ -1,4 +1,4 @@
-import './style.scss';
+import './index.less';
 
 const PostService = function () {
   let self = this;
@@ -97,13 +97,13 @@ const PostView = function () {
 
   self.postElement = function (post) {
     const template = `
-      <div class="post-content">
+      <div class="content">
         <h1>${post.title}</h1>
         
         ${post.content}
       </div>
   
-      <div class="post-metadata">
+      <div class="metadata">
         <div class="details">
           <span>by ${post.author.first_name} ${post.author.last_name}</span>
           <span>${post.date.toLocaleDateString()}</span>
@@ -134,7 +134,7 @@ const ApplicationView = function () {
 
   self.contentTemplate = function () {
     let content = document.createElement('div');
-    content.id = 'content';
+    content.id = 'wrapper';
 
     self.content = content;
   };

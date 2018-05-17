@@ -2,9 +2,9 @@
   "name": "responsive-wordpress-posts",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "webpack -w",
+    "start": "webpack-dev-server --mode development",
     "build": "webpack -p"
   },
   "repository": {
@@ -12,24 +12,24 @@
     "url": "git+https://github.com/sarbull/responsive-wordpress-posts.git"
   },
   "keywords": [
-    "wordpress",
-    "responsive",
-    "posts"
+    "javascript",
+    "playground"
   ],
-  "author": "Sirbu Nicolae-Cezar<sirbunicolaecezar@gmail.com>",
+  "author": "Cezar Sirbu",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/sarbull/responsive-wordpress-posts/issues"
   },
   "homepage": "https://github.com/sarbull/responsive-wordpress-posts#readme",
   "devDependencies": {
-    "css-loader": "^0.28.7",
-    "extract-text-webpack-plugin": "^3.0.2",
-    "html-webpack-plugin": "^2.30.1",
-    "node-sass": "^4.5.3",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.19.0",
-    "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.3"
+    "css-loader": "^0.28.11",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "html-webpack-plugin": "^3.2.0",
+    "less": "^3.0.0",
+    "less-loader": "^4.1.0",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.3",
+    "webpack-dev-server": "^3.1.4"
   }
 }

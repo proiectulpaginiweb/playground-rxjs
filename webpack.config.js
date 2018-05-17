@@ -1,25 +1,21 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const config = {
-  entry: './src/app.js',
+module.exports = {
+  entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js'
-  },
-  resolve: {
-    extensions: ['.js']
+    filename: '[name].bundle.js'
   },
   module: {
     rules: [
       {
-        test: /\.scss$/,
-        use: [
-          { loader: "style-loader" },
-          { loader: "css-loader" },
-          { loader: "sass-loader" }
-        ]
+        test: /\.less$/,
+        use: ExtractTextPlugin.extract({
+          use: ['css-loader', 'less-loader'],
+          fallback: 'style-loader'
+        })
       }
     ]
   },
@@ -27,10 +23,6 @@ const config = {
     new HtmlWebpackPlugin({
       template: './src/index.html'
     }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common'
-    })
+    new ExtractTextPlugin('[name].css')
   ]
 };
-
-module.exports = config;
