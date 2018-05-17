@@ -1,53 +1,99 @@
 import './index.less';
 
-const PostService = function () {
-  let self = this;
+const ViewModule = (function() {
+  function ApplicationView() {}
+  ApplicationView.prototype.render = function() {
+    let content = document.createElement('div');
+    content.id = 'wrapper';
 
-  self.retrieveAll = function () {
+    return content;
+  };
+
+  function PostView(post) {
+    this.post = new ModelModule.Post(post);
+  }
+
+  PostView.prototype.render = function() {
+    const template = `
+      <div class="content">
+        <h1>${this.post.title}</h1>
+        
+        ${this.post.content}
+      </div>
+  
+      <div class="metadata">
+        <div class="details">
+          <span>by ${this.post.author.first_name} ${this.post.author.last_name}</span>
+          <span>${this.post.date.toLocaleDateString()}</span>
+        </div>
+    
+        <div class="links">
+          <a href="${this.post.URL}">More details</a>
+        </div>
+      </div>
+    `;
+
+    const el = document.createElement('div');
+    el.classList.add('post');
+    el.innerHTML = template;
+
+    return el;
+  };
+
+  return {
+    ApplicationView: ApplicationView,
+    PostView: PostView
+  };
+})();
+
+const ServiceModule = (function() {
+  function PostService() {
+
+  }
+
+  PostService.prototype.retrieveAll = function() {
     return fetch('https://public-api.wordpress.com/rest/v1/sites/idcdistro.wordpress.com/posts/');
   };
 
   return {
-    retrieveAll: self.retrieveAll
+    PostService: PostService
   };
-};
+})();
 
-const Post = function (post) {
-  let self = this;
-  self._post = {};
+const ModelModule = (function() {
+  function Post(post) {
+    this.post = post;
 
-  self.setPost = function (post) {
-    self._post.title = post.title;
+    this.title = post.title;
 
-    self._post.author = {
+    this.author = {
       first_name: post.author.first_name,
       last_name: post.author.last_name
     };
 
-    self._post.content = post.content;
+    this.content = post.content;
 
-    self._post.date = new Date(Date.parse(post.date));
+    this.date = new Date(Date.parse(post.date));
 
-    self._post.URL = post.URL;
-  };
-
-  self.setPost(post);
+    this.URL = post.URL;
+  }
 
   return {
-    post: self._post
+    Post: Post
   };
-};
+})();
 
-const PostController = function () {
-  let self = this;
-  self.postService = new PostService();
-  self.postView = new PostView();
+const ControllerModule = (function() {
+  function PostController() {
+    this.posts = [];
+    this.postService = new ServiceModule.PostService();
+    this.renderedItems = 0;
+  }
 
-  self.posts = [];
-  self.renderedItems = 0;
+  PostController.prototype.index = function(applicationContext) {
+    const self = this;
 
-  self.index = function (applicationContext) {
-    return self.postService.retrieveAll().then(
+    return this.postService.retrieveAll().then(
       function (response) {
         if (response.status !== 200) {
           console.error('Status Code:', response.status);
@@ -56,13 +102,15 @@ const PostController = function () {
 
         response.json().then(function (data) {
           data.posts.forEach(function (post) {
-            self.posts.push(new Post(post));
+            self.posts.push(new ModelModule.Post(post));
           });
 
           // render stuff
           self.posts.forEach((el, i) => {
             if (i < 10) {
-              applicationContext.appendChild(self.postView.render(el.post));
+              let view = new ViewModule.PostView(el);
+
+              applicationContext.appendChild(view.render());
 
               self.renderedItems++;
             }
@@ -73,7 +121,9 @@ const PostController = function () {
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
               self.posts.forEach((el, i) => {
                 if (i >= self.renderedItems) {
-                  applicationContext.appendChild(self.postView.render(el.post));
+                  let view = new ViewModule.PostView(el);
+
+                  applicationContext.appendChild(view.render());
 
                   self.renderedItems++;
                 }
@@ -87,81 +137,24 @@ const PostController = function () {
     });
   };
 
-  return {
-    index: self.index
-  };
-};
+  function ApplicationController() {
+    this.postController = new ControllerModule.PostController();
+    this.applicationView = new ViewModule.ApplicationView();
+    this.applicationContext = this.applicationView.render();
 
-const PostView = function () {
-  let self = this;
+    this.init();
+  }
 
-  self.postElement = function (post) {
-    const template = `
-      <div class="content">
-        <h1>${post.title}</h1>
-        
-        ${post.content}
-      </div>
-  
-      <div class="metadata">
-        <div class="details">
-          <span>by ${post.author.first_name} ${post.author.last_name}</span>
-          <span>${post.date.toLocaleDateString()}</span>
-        </div>
-    
-        <div class="links">
-          <a href="${post.URL}">More details</a>
-        </div>
-      </div>
-    `;
+  ApplicationController.prototype.init = function () {
+    document.body.appendChild(this.applicationContext);
 
-    const el = document.createElement('div');
-
-    el.classList.add('post');
-
-    el.innerHTML = template;
-
-    return el;
+    this.postController.index(this.applicationContext);
   };
 
   return {
-    render: self.postElement
+    PostController: PostController,
+    ApplicationController: ApplicationController
   };
-};
+})();
 
-const ApplicationView = function () {
-  let self = this;
-
-  self.contentTemplate = function () {
-    let content = document.createElement('div');
-    content.id = 'wrapper';
-
-    self.content = content;
-  };
-
-  self.contentTemplate();
-
-  return {
-    contentElement: self.content
-  };
-};
-
-const Application = function () {
-  let self = this;
-  self.postController = new PostController();
-  self.applicationView = new ApplicationView();
-
-  self.init = function () {
-    document.body.appendChild(self.applicationView.contentElement);
-
-    self.start();
-  };
-
-  self.start = function () {
-    self.postController.index(self.applicationView.contentElement);
-  };
-
-  self.init();
-};
-
-let app = new Application();
+const Application = new ControllerModule.ApplicationController();
