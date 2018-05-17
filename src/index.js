@@ -1,12 +1,10 @@
 import './index.less';
 
-const ENVModule = (function() {
-  function ENV() {
-    this.API_URL = 'https://public-api.wordpress.com/rest/v1/sites/idcdistro.wordpress.com/posts/';
-  }
+const ENV = (function() {
+  const API_URL = 'https://public-api.wordpress.com/rest/v1/sites/idcdistro.wordpress.com/posts/';
 
   return {
-    ENV: ENV
+    API_URL: API_URL
   };
 })();
 
@@ -58,11 +56,10 @@ const ViewModule = (function() {
 
 const ServiceModule = (function() {
   function PostService() {
-    this.env = new ENVModule.ENV();
   }
 
   PostService.prototype.retrieveAll = function() {
-    return fetch(this.env.API_URL);
+    return fetch(ENV.API_URL);
   };
 
   return {
