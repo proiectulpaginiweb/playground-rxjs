@@ -62,8 +62,6 @@ const ServiceModule = (function() {
 
 const ModelModule = (function() {
   function Post(post) {
-    this.post = post;
-
     this.title = post.title;
 
     this.author = {
