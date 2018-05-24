@@ -1,4 +1,4 @@
-# responsive-wordpress-posts
+# playground-rxjs
 
 # start
 ```bash
