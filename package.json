@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sarbull/responsive-wordpress-posts.git"
+    "url": "git+https://github.com/proiectulpaginiweb/playground-rxjs.git"
   },
   "keywords": [
     "javascript",
@@ -18,9 +18,9 @@
   "author": "Cezar Sirbu",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sarbull/responsive-wordpress-posts/issues"
+    "url": "https://github.com/proiectulpaginiweb/playground-rxjs/issues"
   },
-  "homepage": "https://github.com/sarbull/responsive-wordpress-posts#readme",
+  "homepage": "https://github.com/proiectulpaginiweb/playground-rxjs#readme",
   "dependencies": {
     "rxjs": "^6.1.0",
     "rxjs-compat": "^6.1.0"
